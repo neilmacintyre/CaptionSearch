@@ -24,10 +24,21 @@ class Playlist:
         :param dest: String path to directory to download files to
         :return: None
         """
-        pass
+        for video_id in self.video_ids:
+            # check if langage
+
+            ydl_opts = {'skip_download': True,
+                        'writesubtitles': True,
+                        'subtitleslangs': [lang_code],
+                        'outtmpl': dest + '/TITLE:%(title)s__ID:%(id)s.%(ext)s'
+                        }
+
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download(['https://www.youtube.com/watch?v=%s' % video_id])
 
 
 # test
 if __name__ == "__main__":
-    url = "https://www.youtube.com/playlist?list=PLOGi5-fAu8bFs6LFkvbpoF9u4J-7wNbQH"
+    url = "https://www.youtube.com/playlist?list=PLOGi5-fAu8bGxv7pdPIoc5x8s3N0gSsc0"
     t = Playlist(url)
+    t.download_subs(LANG_CODES.EN, '../../data')
