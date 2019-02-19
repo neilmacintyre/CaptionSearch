@@ -1,2 +1,2 @@
-es = 'es'
-en = 'en'
+ES = 'es'
+EN = 'en'
