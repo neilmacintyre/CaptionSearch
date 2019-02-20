@@ -1,10 +1,7 @@
 from django.db import models
 
-# Create your models here.
-
-
-class Caption(models.Model):
-    video_id = models.CharField(max_length=12)
+class CaptionSegment(models.Model):
+    video_id = models.ForeignKey('Video', on_delete=models.CASCADE)
     start_time = models.FloatField(max_length=12)
     end_time = models.FloatField(max_length=12)
     caption = models.CharField(max_length=100)
@@ -14,24 +11,28 @@ class Caption(models.Model):
 
 
 class Word(models.Model):
-    video_id = models.CharField(max_length=12)
-    segment_start_time = models.FloatField(max_length=12)  # start time of segment that contains the word
+    video_id = models.ForeignKey('Video', on_delete=models.CASCADE)
+    start_time = models.ForeignKey('CaptionSegment', on_delete=models.CASCADE)  # start time of segment that contains the word
     word = models.CharField(max_length=20)
 
     def __str__(self):
         return "%s is available at %d in video %s" % (self.word, self.segment_start_time, self.video_id)
 
 
-# example to copy for easy input into interactive
+class Video(models.Model):
+    title = models.CharField(max_length=144)
+    video_id = models.CharField(max_length=11)
 
-"""
-if __name__ == '__maicn__':
-    print("RUN")
-    import os
+    def __str__(self):
+        return "Title: %s, Video ID: %s" % (title, video_id)
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "langProject.settings")
+class Subtitle(models.Model):
+    language = models.CharField(max_length=3)
+    video_id = models.ForeignKey('Video', on_delete=models.CASCADE)
 
-    #from captions.models import Caption
-    t = Caption(video_id='UID', start_time='000', end_time='124', caption='Captions This is')
-    Caption.objects.all()
-"""
+    def __str__(self):
+        return "ID: %s, Language: %s" % (video_id, language)
+
+
+
+
