@@ -39,6 +39,6 @@ class Playlist:
 
 # test
 if __name__ == "__main__":
-    url = "https://www.youtube.com/playlist?list=PLOGi5-fAu8bGxv7pdPIoc5x8s3N0gSsc0"
+    url = "https://www.youtube.com/playlist?list=PLOGi5-fAu8bGiEvsxHyAvT8oIwkV8aOVk"
     t = Playlist(url)
     t.download_subs(LANG_CODES.EN, '../../data')

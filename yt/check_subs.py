@@ -1,6 +1,7 @@
 import youtube_dl
 import re
 
+# TODO re-implement using std_out_array_method for reduced redundancy
 # takes a youtube url, and a list of target languages
 # return true if all
 def check_subs(url, targets):
