@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CaptionSearch</title>
+        {%load static%}
+        <link rel="stylesheet" href="{% static "/style.css" %}">
+    </head>
+    <body>
+    
+        <div id="container-results">
+            {% for result in query_results%}
+                <div class="result">
+                    <iframe width="150" height="150" src="https://www.youtube-nocookie.com/embed/{{result.video_id}}?start={{result.segment_start_time|floatformat:"0"}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="summary">
+                        <h2>Video Title Here</h2>
+                        <p>Caption segment that the word orginated from</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+    </body>
+
+</html>

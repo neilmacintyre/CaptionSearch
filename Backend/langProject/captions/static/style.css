@@ -1,0 +1,34 @@
+body{
+    background-color: #ffffff;
+   
+}
+
+.result{
+    background: #ffffff;   
+    display: flex;
+    margin: 10px auto;
+    transition: background-color 0.25s, color 0.25s, box-shadow 0.25s;
+    box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.1), 0 0.15rem 0.9rem rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    max-width: 650px;
+}
+
+.result:hover{
+    cursor: pointer;
+    background-color: #f8f8f8;
+}
+
+#container-results{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.result iframe{
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.summary{
+    margin-left:15px;
+}
