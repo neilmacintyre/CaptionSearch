@@ -1,7 +1,7 @@
 from django.db import models
 
 class CaptionSegment(models.Model):
-    video_id = models.ForeignKey('Video', on_delete=models.CASCADE)
+    video_id = models.ForeignKey('Video', to_field='video_id', on_delete=models.CASCADE)
     start_time = models.FloatField(max_length=12)
     end_time = models.FloatField(max_length=12)
     caption = models.CharField(max_length=100)
@@ -11,8 +11,8 @@ class CaptionSegment(models.Model):
 
 
 class Word(models.Model):
-    video_id = models.ForeignKey('Video', on_delete=models.CASCADE)
-    start_time = models.ForeignKey('CaptionSegment', on_delete=models.CASCADE)  # start time of segment that contains the word
+    video_id = models.ForeignKey('Video', to_field='video_id', on_delete=models.CASCADE)
+    caption_segment_id = models.ForeignKey('CaptionSegment', on_delete=models.CASCADE)
     word = models.CharField(max_length=20)
 
     def __str__(self):
@@ -21,17 +21,18 @@ class Word(models.Model):
 
 class Video(models.Model):
     title = models.CharField(max_length=144)
-    video_id = models.CharField(max_length=11)
+    video_id = models.CharField(unique=True, max_length=11)
 
     def __str__(self):
-        return "Title: %s, Video ID: %s" % (title, video_id)
+        return "Title: %s, Video ID: %s" % (self.title, self.video_id)
+
 
 class Subtitle(models.Model):
     language = models.CharField(max_length=3)
-    video_id = models.ForeignKey('Video', on_delete=models.CASCADE)
+    video_id = models.ForeignKey('Video', to_field='video_id', on_delete=models.CASCADE)
 
     def __str__(self):
-        return "ID: %s, Language: %s" % (video_id, language)
+        return "ID: %s, Language: %s" % (self.video_id, self.language)
 
 
 
