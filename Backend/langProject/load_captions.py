@@ -31,7 +31,7 @@ def load_captions(file_path, video_id, title):
         subtitle_segment_row = SubModel(video_id_id=video_id, language=subtitle.lang)
         subtitle_segment_row.save()
 
-
+    caption_segment_rows = []
     for caption_segment in subtitle.captions:
         start_time = caption_segment[0]
         end_time = caption_segment[1]
@@ -40,20 +40,25 @@ def load_captions(file_path, video_id, title):
         # Check if the caption_segment is already in the database
         if len(CaptionSegment.objects.filter(video_id__video_id=video_id).filter(start_time=start_time)) == 0:
             caption_row = CaptionSegment(video_id_id=video_id, start_time=start_time, end_time=end_time, caption=caption)
-            caption_row.save()
+            caption_segment_rows.append(caption_row)
 
+    CaptionSegment.objects.bulk_create(caption_segment_rows)
+
+    word_rows = []
     for word in subtitle.words_by_time():
-        # TODO Check if the caption_segment is already in the database
-        print("Word add:: " + word[1])
-        segment_start_time = word[0]
-        word = word[1]
+        if len(Word.objects.filter(video_id__video_id=video_id).filter(caption_segment_id_id=start_time)) == 0:
+            #print("Word add:: " + word[1])
+            segment_start_time = word[0]
+            word = word[1]
 
-        # find the caption segment containing word
-        parent_segment = CaptionSegment.objects.filter(start_time=segment_start_time).filter(video_id_id=video_id)
+            # find the caption segment containing word
+            parent_segment = CaptionSegment.objects.filter(start_time=segment_start_time).filter(video_id_id=video_id)
 
-        word_row = Word(video_id_id=video_id, caption_segment_id_id=parent_segment.values('id')[0]['id'], word=word)
+            word_row = Word(video_id_id=video_id, caption_segment_id_id=parent_segment.values('id')[0]['id'], word=word)
+            word_rows.append(word_row)
 
-        word_row.save()
+    Word.objects.bulk_create(word_rows)
+
 
 # BULK LOAD IS VERY SLOW -- note it was slow even before existence checks where added
 # TODO optmize this algoritm
